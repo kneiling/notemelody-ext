@@ -2,6 +2,9 @@ import assert from "assert"
 
 import { Storage } from "@plasmohq/storage"
 import { SecureStorage } from "@plasmohq/storage/secure"
+// import { useStorage } from "@plasmohq/storage/dist/hook"
+//
+// import {Person, newPerson } from "~models/Person"
 
 const PASSWORD = "password"
 const TEST_KEY = "ship"
@@ -67,13 +70,25 @@ async function testBaseStorage() {
   await storage.set("make", "PlasmoHQ")
 }
 
+const setAction = () => {
+  chrome.sidePanel
+  .setPanelBehavior({ openPanelOnActionClick: true })
+  .catch((error) => console.error(error))
+}
+
+// const establishUser = () => {
+//   const user: Person = useStorage<Person>("user")
+// }
+//
+
 const main = async () => {
-  await testSecureStorage()
-
-  // Wait for all the watch event to be processed
-  await new Promise((resolve) => setTimeout(resolve, 1470))
-
-  await testBaseStorage()
+  setAction()
+  // await testSecureStorage()
+  //
+  // // Wait for all the watch event to be processed
+  // await new Promise((resolve) => setTimeout(resolve, 1470))
+  //
+  // await testBaseStorage()
 }
 
 main()
