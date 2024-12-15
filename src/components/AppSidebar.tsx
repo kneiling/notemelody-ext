@@ -1,7 +1,8 @@
 import React from "react"
-import { NavLink } from "react-router"
+import { NavLink, useNavigate } from "react-router"
+import {Storage} from "@plasmohq/storage"
 
-import { UserRoundCog, Music2, Music3, Music4, X, ListMusic } from "lucide-react"
+import { UserRoundCog, Music2, Music3, Music4, X, ListMusic, Plus } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -11,15 +12,27 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
   useSidebar
 } from "~components/ui/sidebar"
+import { newMelody } from "~models/Melody"
 
 
 export const AppSidebar: React.FC = () => {
-  const {open} = useSidebar()
+  const {setOpen} = useSidebar()
+
+  const storage = new Storage()
+
+  const navigate = useNavigate()
+
+  const addMelody = async () => {
+    const mel = newMelody()
+    await storage.set(mel.id, mel)
+    navigate(mel.id)
+  }
 
   const melodies = [
     { title: "Song 1", id: "song1", icon: Music2 },
@@ -43,6 +56,10 @@ export const AppSidebar: React.FC = () => {
                   <span>Melodies</span>
                 </NavLink>
               </SidebarMenuButton>
+
+              <SidebarMenuAction onClick={addMelody()}>
+                <Plus /> <span className="sr-only">Add Melody</span>
+              </SidebarMenuAction>
             </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Outlet, useParams } from "react-router"
+import { useStorage } from "@plasmohq/storage/hook"
 
 export const MelodyList: React.FC = () => {
   return (
@@ -12,9 +13,12 @@ export const MelodyList: React.FC = () => {
 export const MelodyComposer: React.FC = () => {
   let params = useParams()
 
+  const [melody] = useStorage(params.melodyId)
+
   return (
     <>
       <h1>Melody</h1>
+      <pre>{JSON.stringify(melody, null, 2)}</pre>
     </>
   )
 }
