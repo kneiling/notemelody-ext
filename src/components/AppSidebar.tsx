@@ -34,13 +34,13 @@ export const AppSidebar: React.FC = () => {
   console.dir(collection)
 
   const addMelody = async (event) => {
-    debugger
     if (!collection) {
       console.error("No collection found. Cannot add melody.");
       return;
     }
 
     const mel = await collection?.insert(newMelody())
+    debugger
     if (mel?.id) {
       navigate(mel.id);
     } else {
@@ -54,7 +54,7 @@ export const AppSidebar: React.FC = () => {
     result: melodies,
     isFetching
   } = useRxQuery(query, {
-    pageSize: 5,
+    pageSize: 10,
     pagination: 'Infinite',
   });
 
@@ -79,7 +79,7 @@ export const AppSidebar: React.FC = () => {
                 </NavLink>
               </SidebarMenuButton>
 
-              <SidebarMenuAction onClick={addMelody()}>
+              <SidebarMenuAction onClick={addMelody}>
                 <Plus /> <span className="sr-only">Add Melody</span>
               </SidebarMenuAction>
             </SidebarGroupLabel>

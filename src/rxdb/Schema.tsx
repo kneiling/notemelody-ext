@@ -7,7 +7,7 @@ import { zodToJsonSchema } from "zod-to-json-schema"
 
 import { melodyZodSchema } from "~zodSchemas/Melody"
 
-const melodyJsonSchema = zodToJsonSchema(melodyZodSchema, {name:"melodySchema", nameStrategy: "title"})
+export const melodyJsonSchema = zodToJsonSchema(melodyZodSchema, {name:"melodySchema", nameStrategy: "title"})
 
 const melodySchemaLiteral = {
   ...melodyJsonSchema,
