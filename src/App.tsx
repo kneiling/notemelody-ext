@@ -7,14 +7,15 @@ import {
   RouterProvider
 } from "react-router"
 
-import init from '~rxdb/init'
+import init from '~rxdbModel/init'
 import { Layout } from "~components/Layout"
-import { MelodyComposer, MelodyList, NewMelody } from "~components/Melodies"
+import { MelodyComposer} from "~components/MelodyComposer"
+import { MelodyList, MelodyHelp } from "~components/Melodies"
 import { Account } from "~components/Account"
 
 import './style.css'
 import { removeRxDatabase } from "rxdb"
-import { getRxStorageDexie } from "rxdb/dist/types/plugins/storage-dexie"
+import { getRxStorageDexie } from "rxdb/plugins/storage-dexie"
 
 interface AppProps {
   entrypoint: string
@@ -25,7 +26,7 @@ const App: React.FC<AppProps> = ({entrypoint}) => {
   const router = createMemoryRouter(
     createRoutesFromElements(
       <Route element={<Layout />} >
-        <Route index element={<NewMelody />} />
+        <Route index element={<MelodyHelp />} />
         <Route path=":melodyId" element={<MelodyComposer />} />
         <Route path="mels" element={<MelodyList />} />
 

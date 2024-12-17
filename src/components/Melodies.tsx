@@ -1,42 +1,13 @@
 import React from 'react'
-import { Outlet, useParams } from "react-router"
+import { Outlet, useParams, NavLink } from "react-router"
 import { useRxCollection, useRxQuery } from 'rxdb-hooks'
 import { useStorage } from "@plasmohq/storage/hook"
 
-import {melodyRxSchema, melodyJsonSchema} from "~rxdb/Schema"
-
-export const MelodyList: React.FC = () => {
-  return (
-    <div>
-      <h2>melodyRxSchema</h2>
-      <pre>{JSON.stringify(melodyRxSchema, null, 2)}</pre>
-
-      <h2>melodyJsonSchema</h2>
-      <pre>{JSON.stringify(melodyJsonSchema, null, 2)}</pre>
-    </div>
-  )
-}
-
-export const MelodyComposer: React.FC = () => {
-  let params = useParams()
-
-  const collection = useRxCollection("melodies")
-  const {result: melody, isFetching} = useRxQuery(collection?.findOne().where("id").equals(params.id))
+import { melodyRxSchema, melodyJsonSchema, type MelodyDocType } from "~rxdbModel/Schema"
+import type { RxCollection } from "rxdb"
 
 
-  return (
-    <>
-      <h2>Params</h2>
-      <pre>{JSON.stringify(params, null, 2)}</pre>
-
-      <h2>Melody</h2>
-      {isFetching && <div>Loading...</div>}
-      <pre>{JSON.stringify(melody, null, 2)}</pre>
-    </>
-  )
-}
-
-export const NewMelody: React.FC = () => {
+export const MelodyHelp: React.FC = () => {
   return (
     <div>
       <h1>New Melody</h1>
@@ -46,6 +17,35 @@ export const NewMelody: React.FC = () => {
 
       <h2>melodyJsonSchema</h2>
       <pre>{JSON.stringify(melodyJsonSchema, null, 2)}</pre>
+    </div>
+  )
+}
+
+
+export const MelodyList: React.FC = () => {
+  const collection: RxCollection<MelodyDocType> | null = useRxCollection('melodies');
+  const {
+    result: melodies,
+    isFetching
+  } = useRxQuery(collection?.find(), {
+    pageSize: 10,
+    pagination: 'Infinite',
+  });
+
+  if (isFetching) {
+    return 'Loading...';
+  }
+
+  return (
+    <div>
+      <h2>All yo melodies</h2>
+
+      <ul>
+      { melodies.map((melody) => (
+        <li><NavLink to={melody.id}>{melody.title} | {melody.id}</NavLink></li>
+      ))}
+      </ul>
+
     </div>
   )
 }

@@ -22,7 +22,7 @@ import {
 import { newMelody } from "~zodSchemas/Melody"
 
 import type { RxCollection } from "rxdb"
-import type { MelodyDocType } from "~rxdb/Schema"
+import type { MelodyDocType } from "~rxdbModel/Schema"
 
 
 export const AppSidebar: React.FC = () => {
