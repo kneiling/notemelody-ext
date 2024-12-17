@@ -30,22 +30,17 @@ export const AppSidebar: React.FC = () => {
   const navigate = useNavigate()
   const collection: RxCollection<MelodyDocType> | null = useRxCollection('melodies');
 
-  console.dir(navigate)
-  console.dir(collection)
-
   const addMelody = async (event) => {
     if (!collection) {
       console.error("No collection found. Cannot add melody.");
       return;
     }
 
-    const mel = await collection?.insert(newMelody())
-    debugger
-    if (mel?.id) {
-      navigate(mel.id);
-    } else {
-      console.error("Failed to navigate because melody ID is undefined.");
-    }
+    const mel = newMelody()
+
+    collection?.insert(mel as MelodyDocType).then(() =>
+      navigate(mel.id)
+    )
   }
 
   const query = collection?.find();

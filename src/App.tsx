@@ -13,6 +13,8 @@ import { MelodyComposer, MelodyList, NewMelody } from "~components/Melodies"
 import { Account } from "~components/Account"
 
 import './style.css'
+import { removeRxDatabase } from "rxdb"
+import { getRxStorageDexie } from "rxdb/dist/types/plugins/storage-dexie"
 
 interface AppProps {
   entrypoint: string
@@ -36,6 +38,7 @@ const App: React.FC<AppProps> = ({entrypoint}) => {
 
   useEffect(() => {
     // RxDB instantiation can be asynchronous
+    removeRxDatabase('melody-db', getRxStorageDexie());
     init().then(setDb);
   }, []);
 
