@@ -16,7 +16,7 @@ import {
 import { Input } from "~components/ui/input"
 import { Button } from "~components/ui/button"
 
-import { type Person, newPerson, personFormSchema, updatePerson } from "~models/Person"
+import { type Person, newPerson, personFormSchema, updatePerson } from "~zodSchemas/Person"
 
 
 export const Account = () => {

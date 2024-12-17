@@ -1,6 +1,7 @@
 import React from "react"
 import { NavLink, useNavigate } from "react-router"
 import {Storage} from "@plasmohq/storage"
+import { useRxCollection, useRxQuery } from 'rxdb-hooks';
 
 import { UserRoundCog, Music2, Music3, Music4, X, ListMusic, Plus } from "lucide-react"
 import {
@@ -18,27 +19,48 @@ import {
   SidebarTrigger,
   useSidebar
 } from "~components/ui/sidebar"
-import { newMelody } from "~models/Melody"
+import { newMelody } from "~zodSchemas/Melody"
+
+import type { RxCollection } from "rxdb"
+import type { MelodyDocType } from "~rxdb/Schema"
 
 
 export const AppSidebar: React.FC = () => {
   const {setOpen} = useSidebar()
-
-  const storage = new Storage()
-
   const navigate = useNavigate()
+  const collection: RxCollection<MelodyDocType> | null = useRxCollection('melodies');
 
-  const addMelody = async () => {
-    const mel = newMelody()
-    await storage.set(mel.id, mel)
-    navigate(mel.id)
+  console.dir(navigate)
+  console.dir(collection)
+
+  const addMelody = async (event) => {
+    debugger
+    if (!collection) {
+      console.error("No collection found. Cannot add melody.");
+      return;
+    }
+
+    const mel = await collection?.insert(newMelody())
+    if (mel?.id) {
+      navigate(mel.id);
+    } else {
+      console.error("Failed to navigate because melody ID is undefined.");
+    }
   }
 
-  const melodies = [
-    { title: "Song 1", id: "song1", icon: Music2 },
-    { title: "Song 2", id: "song2", icon: Music3 },
-    { title: "Song 3", id: "song3", icon: Music4 },
-  ]
+  const query = collection?.find();
+
+  const {
+    result: melodies,
+    isFetching
+  } = useRxQuery(query, {
+    pageSize: 5,
+    pagination: 'Infinite',
+  });
+
+  if (isFetching) {
+    return 'Loading...';
+  }
 
   return (
     <>
@@ -67,7 +89,7 @@ export const AppSidebar: React.FC = () => {
                   <SidebarMenuItem key={melody.title}>
                     <SidebarMenuButton asChild>
                       <NavLink to={melody.id}>
-                        <melody.icon />
+                        <Music3 />
                         <span>{melody.title}</span>
                       </NavLink>
                     </SidebarMenuButton>

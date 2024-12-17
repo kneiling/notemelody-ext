@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { v4 as uuid } from 'uuid';
-import { idSchema, timeSchema } from "~models/base"
+import { idSchema, timeSchema } from "~zodSchemas/base"
 
 const personSchema = z.object({
   email: z.string().email().nullable(),

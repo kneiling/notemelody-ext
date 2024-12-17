@@ -2,10 +2,13 @@ import React from 'react'
 import { Outlet, useParams } from "react-router"
 import { useStorage } from "@plasmohq/storage/hook"
 
+import {melodyRxSchema} from "~rxdb/Schema"
+
 export const MelodyList: React.FC = () => {
   return (
     <div>
       <h1>Melody List</h1>
+      <pre>{JSON.stringify(melodyRxSchema, null, 2)}</pre>
     </div>
   )
 }

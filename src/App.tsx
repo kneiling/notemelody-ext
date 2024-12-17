@@ -1,15 +1,13 @@
-import React, { StrictMode } from "react"
+import React, { StrictMode, useEffect, useState } from "react"
+import { Provider } from 'rxdb-hooks';
 import {
   createMemoryRouter,
   createRoutesFromElements,
   Route,
   RouterProvider
 } from "react-router"
-import { useStorage } from "@plasmohq/storage/hook"
-import { Storage } from "@plasmohq/storage"
 
-import { Person } from "~models/Person"
-
+import init from '~rxdb/init'
 import { Layout } from "~components/Layout"
 import { MelodyComposer, MelodyList, NewMelody } from "~components/Melodies"
 import { Account } from "~components/Account"
@@ -21,13 +19,6 @@ interface AppProps {
 }
 
 const App: React.FC<AppProps> = ({entrypoint}) => {
-
-  const [user] = useStorage<Person>({
-    key: "user",
-    instance: new Storage({
-      area: "local"
-    })
-  })
 
   const router = createMemoryRouter(
     createRoutesFromElements(
@@ -41,9 +32,18 @@ const App: React.FC<AppProps> = ({entrypoint}) => {
     )
   )
 
+  const [db, setDb] = useState();
+
+  useEffect(() => {
+    // RxDB instantiation can be asynchronous
+    init().then(setDb);
+  }, []);
+
   return (
     <StrictMode>
-      <RouterProvider router={router} />
+      <Provider db={db}>
+        <RouterProvider router={router} />
+      </Provider>
     </StrictMode>
   )
 }

@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 export const idSchema = z.object({
-  id: z.string()
+  id: z.string().uuid()
 })
 
 export const timeSchema = z.object({

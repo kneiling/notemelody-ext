@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import { z } from "zod"
 
-import { idSchema, timeSchema } from "~models/base"
+import { idSchema, timeSchema } from "~zodSchemas/base"
 
 export const citationSchema = z.object({
   content: z.string().nullable(),
