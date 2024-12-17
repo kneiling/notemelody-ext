@@ -30,22 +30,17 @@ export const AppSidebar: React.FC = () => {
   const navigate = useNavigate()
   const collection: RxCollection<MelodyDocType> | null = useRxCollection('melodies');
 
-  console.dir(navigate)
-  console.dir(collection)
-
   const addMelody = async (event) => {
-    debugger
     if (!collection) {
       console.error("No collection found. Cannot add melody.");
       return;
     }
 
-    const mel = await collection?.insert(newMelody())
-    if (mel?.id) {
-      navigate(mel.id);
-    } else {
-      console.error("Failed to navigate because melody ID is undefined.");
-    }
+    const mel = newMelody()
+
+    collection?.insert(mel as MelodyDocType).then(() =>
+      navigate(mel.id)
+    )
   }
 
   const query = collection?.find();
@@ -54,7 +49,7 @@ export const AppSidebar: React.FC = () => {
     result: melodies,
     isFetching
   } = useRxQuery(query, {
-    pageSize: 5,
+    pageSize: 10,
     pagination: 'Infinite',
   });
 
@@ -79,7 +74,7 @@ export const AppSidebar: React.FC = () => {
                 </NavLink>
               </SidebarMenuButton>
 
-              <SidebarMenuAction onClick={addMelody()}>
+              <SidebarMenuAction onClick={addMelody}>
                 <Plus /> <span className="sr-only">Add Melody</span>
               </SidebarMenuAction>
             </SidebarGroupLabel>

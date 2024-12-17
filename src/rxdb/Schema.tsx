@@ -7,23 +7,17 @@ import { zodToJsonSchema } from "zod-to-json-schema"
 
 import { melodyZodSchema } from "~zodSchemas/Melody"
 
-const melodyJsonSchema = zodToJsonSchema(melodyZodSchema, {name:"melodySchema", nameStrategy: "title"})
+export const melodyJsonSchema = zodToJsonSchema(melodyZodSchema, {
+  name: "melodySchema",
+  nameStrategy: "title",
+  $refStrategy: "none"
+})
 
 const melodySchemaLiteral = {
   ...melodyJsonSchema,
   version: 0,
   type: "object",
   primaryKey: "id",
-  properties: {
-    id: {
-      type: "string",
-      maxLength: 100
-    }
-  },
-  required: [
-    "id"
-  ],
-  additionalProperties: false
 } as const;
 const schemaTyped = toTypedRxJsonSchema(melodySchemaLiteral);
 
