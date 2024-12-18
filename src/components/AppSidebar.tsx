@@ -19,42 +19,30 @@ import {
   SidebarTrigger,
   useSidebar
 } from "~components/ui/sidebar"
-import { newMelody } from "~zodSchemas/Melody"
+import MelodySidebarMenu from "~components/MelodySidebarMenu"
 
-import type { RxCollection } from "rxdb"
-import type { MelodyDocType } from "~rxdbModel/Schema"
+import type { MelodyCollection } from "~orm/melody/collection"
 
 
 export const AppSidebar: React.FC = () => {
   const {setOpen} = useSidebar()
   const navigate = useNavigate()
-  const collection: RxCollection<MelodyDocType> | null = useRxCollection('melodies');
 
-  const addMelody = async (event) => {
+  const createNewMelody = async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    debugger;
+    const collection: MelodyCollection | null = useRxCollection('melodies');
     if (!collection) {
       console.error("No collection found. Cannot add melody.");
       return;
     }
 
-    const mel = newMelody()
-
-    collection?.insert(mel as MelodyDocType).then(() =>
-      navigate(mel.id)
-    )
-  }
-
-  const query = collection?.find();
-
-  const {
-    result: melodies,
-    isFetching
-  } = useRxQuery(query, {
-    pageSize: 10,
-    pagination: 'Infinite',
-  });
-
-  if (isFetching) {
-    return 'Loading...';
+    debugger;
+    const mel = await collection.newMelody()
+    setOpen(false)
+    debugger;
+    navigate(mel.id)
   }
 
   return (
@@ -74,23 +62,12 @@ export const AppSidebar: React.FC = () => {
                 </NavLink>
               </SidebarMenuButton>
 
-              <SidebarMenuAction onClick={addMelody}>
+              <SidebarMenuAction onClick={createNewMelody}>
                 <Plus /> <span className="sr-only">Add Melody</span>
               </SidebarMenuAction>
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
-                {melodies.map((melody) => (
-                  <SidebarMenuItem key={melody.title}>
-                    <SidebarMenuButton asChild>
-                      <NavLink to={melody.id}>
-                        <Music3 />
-                        <span>{melody.title}</span>
-                      </NavLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
+              <MelodySidebarMenu />
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>

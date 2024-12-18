@@ -17,7 +17,7 @@ export const noteSchema: z.ZodType<Note> = baseNoteSchema.extend({
   notes: z.lazy(() => noteSchema.array()),
 });
 
-export const newNote = () => {
+export const newZodNote = () => {
   return {
     ...noteSchema.parse({
       id: uuid(),

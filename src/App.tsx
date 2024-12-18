@@ -7,9 +7,9 @@ import {
   RouterProvider
 } from "react-router"
 
-import init from '~rxdbModel/init'
+import init from '~orm/init'
 import { Layout } from "~components/Layout"
-import { MelodyComposer} from "~components/MelodyComposer"
+import MelodyComposer from "~components/MelodyComposer"
 import { MelodyList, MelodyHelp } from "~components/Melodies"
 import { Account } from "~components/Account"
 

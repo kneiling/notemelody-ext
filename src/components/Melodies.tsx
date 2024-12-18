@@ -3,14 +3,14 @@ import { Outlet, useParams, NavLink } from "react-router"
 import { useRxCollection, useRxQuery } from 'rxdb-hooks'
 import { useStorage } from "@plasmohq/storage/hook"
 
-import { melodyRxSchema, melodyJsonSchema, type MelodyDocType } from "~rxdbModel/Schema"
+import { melodyRxSchema, melodyJsonSchema, type MelodyDocType } from "~orm/melody/schema"
 import type { RxCollection } from "rxdb"
 
 
 export const MelodyHelp: React.FC = () => {
   return (
     <div>
-      <h1>New Melody</h1>
+      <h1>NoteMelody!!</h1>
 
       <h2>melodyRxSchema</h2>
       <pre>{JSON.stringify(melodyRxSchema, null, 2)}</pre>

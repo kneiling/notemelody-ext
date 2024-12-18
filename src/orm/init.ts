@@ -3,7 +3,8 @@ import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
 
-import { melodyRxSchema } from './Schema';
+import { melodyRxSchema } from './melody/schema';
+import melodyCollection from "~orm/melody/collection"
 
 
 const init = async (): Promise<RxDatabase> => {
@@ -17,11 +18,7 @@ const init = async (): Promise<RxDatabase> => {
 
   window['db'] = db // write to window for debugging
 
-  await db.addCollections({
-    melodies: {
-      schema: melodyRxSchema,
-    }
-  })
+  await db.addCollections(melodyCollection)
 
   return db
 }
