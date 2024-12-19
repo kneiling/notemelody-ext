@@ -2,7 +2,7 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "~components/ui/
 import { NavLink } from "react-router"
 import { Loader, Music3 } from "lucide-react"
 import React from "react"
-import type { MelodyCollection } from "~orm/melody/collection"
+import type { MelodyCollection } from "~data/melody/collection"
 import { useRxCollection, useRxQuery } from 'rxdb-hooks';
 
 

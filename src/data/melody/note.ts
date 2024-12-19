@@ -1,8 +1,11 @@
 import { v4 as uuid } from 'uuid';
 import { z } from "zod"
 
-import { idSchema, timeSchema } from "~zodSchemas/base"
-import { citationSchema } from "~zodSchemas/Citation"
+import { idSchema, timeSchema } from "~data/baseZodSchema"
+
+export const citationSchema = z.object({
+  content: z.string().nullable(),
+}).merge(idSchema).merge(timeSchema)
 
 const baseNoteSchema = z.object({
   title: z.string().nullable(),

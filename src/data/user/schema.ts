@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { v4 as uuid } from 'uuid';
-import { idSchema, timeSchema } from "~zodSchemas/base"
+import { idSchema, timeSchema } from "~data/baseZodSchema"
 
 const personSchema = z.object({
   email: z.string().email().nullable(),
@@ -10,7 +10,7 @@ const personSchema = z.object({
   }).nullable(),
 }).merge(idSchema).merge(timeSchema)
 
-export type Person = z.infer<typeof personSchema>
+export type Schema = z.infer<typeof personSchema>
 
 export function newPerson() {
   return {
@@ -30,7 +30,7 @@ export const personFormSchema = personSchema.pick({
   fullName: true,
 })
 
-export const updatePerson = (person: Person, values: Partial<Person>) => {
+export const updatePerson = (person: Schema, values: Partial<Schema>) => {
   return {
     ...person,
     ...values,

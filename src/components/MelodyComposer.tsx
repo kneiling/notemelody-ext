@@ -15,9 +15,6 @@ const MelodyComposer: React.FC = () => {
 
   return (
     <>
-      <h2>Params</h2>
-      <pre>{JSON.stringify(params, null, 2)}</pre>
-
       <h2>Melody</h2>
       {isFetching && <div>Loading...</div>}
       <pre>{JSON.stringify(melody, null, 2)}</pre>

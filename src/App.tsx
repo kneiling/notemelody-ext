@@ -7,7 +7,7 @@ import {
   RouterProvider
 } from "react-router"
 
-import init from '~orm/init'
+import init from '~data/init'
 import { Layout } from "~components/Layout"
 import MelodyComposer from "~components/MelodyComposer"
 import { MelodyList, MelodyHelp } from "~components/Melodies"

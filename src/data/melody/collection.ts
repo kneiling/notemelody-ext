@@ -1,9 +1,8 @@
 import { type RxCollection } from "rxdb"
 
-import { type MelodyDocType, melodyRxSchema } from "~orm/melody/schema"
+import { type MelodyDocType, melodyRxSchema, melodyZodSchema } from "~data/melody/schema"
 import { v4 as uuid } from "uuid"
-import { newZodNote } from "~zodSchemas/Note"
-import { melodyZodSchema } from "~zodSchemas/Melody"
+import { newZodNote } from "~data/melody/note"
 
 type MelodyMethods = {}
 type MelodyStatics = {
@@ -11,13 +10,11 @@ type MelodyStatics = {
 }
 export type MelodyCollection = RxCollection<MelodyDocType, MelodyMethods, MelodyStatics>
 
-
-
 const melodyMethods = {}
 
 const melodyStatics: MelodyStatics = {
-  newMelody: async (this: MelodyCollection) => {
-    let mel = {
+  newMelody: async function (this: MelodyCollection) {
+    const melody: MelodyDocType = await this.insert({
       ...melodyZodSchema.parse({
         id: uuid(),
         createdAt: new Date().toISOString(),
@@ -25,8 +22,7 @@ const melodyStatics: MelodyStatics = {
         title: null,
         notes: [newZodNote()]
       })
-    }
-    const melody: MelodyDocType = await this.insert(mel)
+    } as MelodyDocType)
     return melody
   }
 }

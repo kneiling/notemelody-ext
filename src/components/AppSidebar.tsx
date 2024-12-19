@@ -21,7 +21,8 @@ import {
 } from "~components/ui/sidebar"
 import MelodySidebarMenu from "~components/MelodySidebarMenu"
 
-import type { MelodyCollection } from "~orm/melody/collection"
+import type { MelodyCollection } from "~data/melody/collection"
+import type { MelodyDocType } from "~data/melody/schema"
 
 
 export const AppSidebar: React.FC = () => {
@@ -39,10 +40,10 @@ export const AppSidebar: React.FC = () => {
     }
 
     debugger;
-    const mel = await collection.newMelody()
+    const mel: MelodyDocType = await collection.newMelody()
     setOpen(false)
     debugger;
-    navigate(mel.id)
+    navigate(mel.id, {replace: true})
   }
 
   return (

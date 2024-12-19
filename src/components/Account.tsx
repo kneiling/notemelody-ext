@@ -16,12 +16,12 @@ import {
 import { Input } from "~components/ui/input"
 import { Button } from "~components/ui/button"
 
-import { type Person, newPerson, personFormSchema, updatePerson } from "~zodSchemas/Person"
+import { type Schema, newPerson, personFormSchema, updatePerson } from "~data/user/schema"
 
 
 export const Account = () => {
 
-  const [user, setUser] = useStorage<Person>("user")
+  const [user, setUser] = useStorage<Schema>("user")
 
   const [edit, setEdit] = useState(false)
   const toggleEdit = () => setEdit((prev) => !prev)
@@ -56,7 +56,7 @@ Account.Header = ({ children }: { children: React.ReactNode }) => (
   <div className="flex justify-between items-center">{children}</div>
 )
 
-Account.View = ({ person }: { person: Person }) => (
+Account.View = ({ person }: { person: Schema }) => (
   <div className="person">
     <h4>Account Info</h4>
     <pre>{JSON.stringify(person, null, 2)}</pre>
@@ -68,8 +68,8 @@ Account.Form = ({
   onSave,
   onCancel,
 }: {
-  person: Person
-  onSave: (user: Person) => void
+  person: Schema
+  onSave: (user: Schema) => void
   onCancel: () => void
 }) => {
   const form = useForm<z.infer<typeof personFormSchema>>({

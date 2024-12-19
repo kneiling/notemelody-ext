@@ -1,13 +1,12 @@
-import React from 'react'
-import { Outlet, useParams, NavLink } from "react-router"
-import { useRxCollection, useRxQuery } from 'rxdb-hooks'
-import { useStorage } from "@plasmohq/storage/hook"
+import React from 'react';
+import { NavLink, Outlet, useLocation, useParams } from "react-router";
+import type { RxCollection } from "rxdb";
+import { useRxCollection, useRxQuery } from 'rxdb-hooks';
 
-import { melodyRxSchema, melodyJsonSchema, type MelodyDocType } from "~orm/melody/schema"
-import type { RxCollection } from "rxdb"
-
+import { melodyJsonSchema, melodyRxSchema, type MelodyDocType } from "~data/melody/schema";
 
 export const MelodyHelp: React.FC = () => {
+
   return (
     <div>
       <h1>NoteMelody!!</h1>
@@ -21,19 +20,16 @@ export const MelodyHelp: React.FC = () => {
   )
 }
 
-
 export const MelodyList: React.FC = () => {
-  const collection: RxCollection<MelodyDocType> | null = useRxCollection('melodies');
-  const {
-    result: melodies,
-    isFetching
-  } = useRxQuery(collection?.find(), {
+  const collection: RxCollection<MelodyDocType> | null =
+    useRxCollection("melodies")
+  const { result: melodies, isFetching } = useRxQuery(collection?.find(), {
     pageSize: 10,
-    pagination: 'Infinite',
-  });
+    pagination: "Infinite"
+  })
 
   if (isFetching) {
-    return 'Loading...';
+    return "Loading..."
   }
 
   return (
@@ -41,11 +37,14 @@ export const MelodyList: React.FC = () => {
       <h2>All yo melodies</h2>
 
       <ul>
-      { melodies.map((melody) => (
-        <li><NavLink to={melody.id}>{melody.title} | {melody.id}</NavLink></li>
-      ))}
+        {melodies.map((melody) => (
+          <li>
+            <NavLink to={melody.id}>
+              {melody.title} | {melody.id}
+            </NavLink>
+          </li>
+        ))}
       </ul>
-
     </div>
   )
 }

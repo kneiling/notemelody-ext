@@ -5,7 +5,17 @@ import {
 } from 'rxdb';
 import { zodToJsonSchema } from "zod-to-json-schema"
 
-import { melodyZodSchema } from "~zodSchemas/Melody"
+import { z } from "zod";
+
+import { idSchema, timeSchema } from "~data/baseZodSchema"
+import { noteSchema, newZodNote } from "./note"
+
+
+export const melodyZodSchema = z.object({
+  title: z.string().nullable(),
+  notes: z.array(noteSchema)
+}).merge(idSchema).merge(timeSchema)
+
 
 export const melodyJsonSchema = zodToJsonSchema(melodyZodSchema, {
   name: "melodySchema",
