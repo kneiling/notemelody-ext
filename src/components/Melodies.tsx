@@ -4,6 +4,8 @@ import type { RxCollection } from "rxdb";
 import { useRxCollection, useRxQuery } from 'rxdb-hooks';
 
 import { melodyJsonSchema, melodyRxSchema, type MelodyDocType } from "~data/melody/schema";
+import type { MelodyCollection } from "~data/melody/collection"
+import { Loader } from "lucide-react"
 
 export const MelodyHelp: React.FC = () => {
 
@@ -21,26 +23,22 @@ export const MelodyHelp: React.FC = () => {
 }
 
 export const MelodyList: React.FC = () => {
-  const collection: RxCollection<MelodyDocType> | null =
-    useRxCollection("melodies")
-  const { result: melodies, isFetching } = useRxQuery(collection?.find(), {
-    pageSize: 10,
-    pagination: "Infinite"
-  })
+  const collection: MelodyCollection | null = useRxCollection("melodies")
 
-  if (isFetching) {
-    return "Loading..."
-  }
+  const { result: melodies, isFetching } = useRxQuery(collection?.find())
 
   return (
     <div>
       <h2>All yo melodies</h2>
 
       <ul>
-        {melodies.map((melody) => (
+        {isFetching && <li><Loader /></li>}
+
+        {melodies.map((melody: MelodyDocType) => (
           <li>
+            <pre>{JSON.stringify(melody, null, 2)}</pre>
             <NavLink to={melody.id}>
-              {melody.title} | {melody.id}
+              {melody.title} | {melody.id} | {melody.key}
             </NavLink>
           </li>
         ))}
