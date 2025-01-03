@@ -1,21 +1,18 @@
 import React from "react";
 import { useParams } from "react-router";
-import { useRxCollection, useRxQuery } from "rxdb-hooks";
+import { type RxCollection } from 'rxdb';
+import { useRxData } from "rxdb-hooks";
 
 
 const MelodyComposer: React.FC = () => {
   const { id } = useParams()
-  const collection = useRxCollection("melodies")
 
-  const {
-    result: melody,
-    isFetching
-  } = useRxQuery(
-    collection?.findOne(id),
-    {
-      enabled: !!id && !!collection,
-    }
+  const queryConstructor = React.useCallback(
+    (collection: RxCollection) => collection.findOne(id),
+    [id]
   )
+
+  const { result: melody, isFetching } = useRxData('melodies', queryConstructor)
 
   return (
     <>

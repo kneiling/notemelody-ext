@@ -27,7 +27,7 @@ const App: React.FC<AppProps> = ({entrypoint}) => {
     createRoutesFromElements(
       <Route element={<Layout />} >
         <Route index element={<MelodyHelp />} />
-        <Route path=":melodyId" element={<MelodyComposer />} />
+        <Route path="mels/:id" element={<MelodyComposer />} />
         <Route path="mels" element={<MelodyList />} />
 
         <Route path="account" element={<Account />} />

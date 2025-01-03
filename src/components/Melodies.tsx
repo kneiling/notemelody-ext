@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Outlet, useLocation, useParams } from "react-router";
 import type { RxCollection } from "rxdb";
-import { useRxCollection, useRxQuery } from 'rxdb-hooks';
+import { useRxCollection, useRxData, useRxQuery } from "rxdb-hooks"
 
 import { melodyJsonSchema, melodyRxSchema, type MelodyDocType } from "~data/melody/schema";
 import type { MelodyCollection } from "~data/melody/collection"
@@ -23,9 +23,11 @@ export const MelodyHelp: React.FC = () => {
 }
 
 export const MelodyList: React.FC = () => {
-  const collection: MelodyCollection | null = useRxCollection("melodies")
-
-  const { result: melodies, isFetching } = useRxQuery(collection?.find())
+  const queryConstructor = React.useCallback(
+    (collection: RxCollection) => collection.find(),
+    []
+  )
+  const { result: melodies, isFetching } = useRxData('melodies', queryConstructor)
 
   return (
     <div>
@@ -36,9 +38,8 @@ export const MelodyList: React.FC = () => {
 
         {melodies.map((melody: MelodyDocType) => (
           <li>
-            <pre>{JSON.stringify(melody, null, 2)}</pre>
             <NavLink to={melody.id}>
-              {melody.title} | {melody.id} | {melody.key}
+              {melody.id}: {melody.title || "no title"}, created: {new Date(melody.createdAt).toLocaleString()}
             </NavLink>
           </li>
         ))}

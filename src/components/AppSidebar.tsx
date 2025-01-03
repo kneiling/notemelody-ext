@@ -30,20 +30,14 @@ export const AppSidebar: React.FC = () => {
   const navigate = useNavigate()
 
   const createNewMelody = async (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    debugger;
-    const collection: MelodyCollection | null = useRxCollection('melodies');
-    if (!collection) {
-      console.error("No collection found. Cannot add melody.");
-      return;
-    }
-
-    debugger;
-    const mel: MelodyDocType = await collection.newMelody()
-    setOpen(false)
-    debugger;
-    navigate(mel.id, {replace: true})
+    event.preventDefault()
+    event.stopPropagation()
+    db.melodies.newMelody().then(
+      (melody: MelodyDocType)=> navigate(`mels/${melody.id}`, {replace: true})
+    )
+    .catch(
+      (error) => console.error(error)
+    )
   }
 
   return (
